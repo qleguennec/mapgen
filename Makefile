@@ -1,7 +1,7 @@
-PROJECT		=	test-libnoise
+PROJECT		=	mapgen
 BINDIR		?=	.
 BUILDDIR	?=	build
-NAME		=	$(BINDIR)/test-libnoise
+NAME		=	$(BINDIR)/mapgen
 
 CC			=	clang
 CFLAGS		=	-Wall -Wextra -Werror -g
@@ -24,7 +24,7 @@ SRCEX		=
 SRC			=	$(filter-out $(SRCEX), $(filter %.c, $(shell ls)))
 OBJECTS		=	$(addprefix $(BUILDDIR)/, $(SRC:%.c=%.o))
 
-LIBLINK		=	 -lft
+LIBLINK		=	 -lfmt -lvect -lft
 LIBDIRS		:=	$(patsubst -l%, lib%, $(LIBLINK))
 LIBS		:=	$(addsuffix .a, $(LIBDIRS))
 LDFLAGS		:=	$(addprefix -L, $(LIBDIRS))
@@ -57,6 +57,6 @@ fclean: clean
 	rm -rf $(NAME)
 
 ex: re
-	$(NAME)
+	$(NAME) 20 20 1000
 
 re: fclean all
