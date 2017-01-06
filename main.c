@@ -6,14 +6,17 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 16:03:09 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/06 18:39:07 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/06 19:50:11 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mapgen.h"
 
-#define BOUND (i == 0 || j == o || i == width - 1 || j == height - 1 + o)
-#define VALUE(m, x) (m)[i * width + j] = x
+#define PHI 1.618
+
+#define BOUND (i == 0 || j == 0 || i == width - 1 || j == height - 1)
+#define VALUE(m, i, j, x) (m)[i * (width + 1) + j] = x
+#define NROOMS(a) (t_u32)(sqrt(a) * PHI)
 
 static void
 	init
@@ -24,20 +27,17 @@ static void
 {
 	size_t	i;
 	size_t	j;
-	size_t	o;
 
 	MALLOC_N(*map, area);
 	i = -1;
-	j = -1;
-	o = 0;
 	while (++i < height)
 	{
-		while (++j < width + o)
-			VALUE(*map, BOUND ? MAP_WALL : MAP_NONE);
-		VALUE(*map, MAP_NL);
-		j = o++;
+		j = -1;
+		while (++j < width)
+			VALUE(*map, i, j, BOUND ? MAP_WALL : MAP_NONE);
+		VALUE(*map, i, j, MAP_NL);
 	}
-	VALUE(*map, MAP_NL);
+	VALUE(*map, i, j, MAP_NL);
 }
 
 static void
@@ -46,13 +46,22 @@ static void
 	 , t_u32 height
 	 , t_u32 seed)
 {
-	size_t	area;
-	t_u32	*map;
+	size_t	i;
+	t_gen	gen;
 
-	(void)seed;
-	area = (width + 1) * height;
-	init(&map, width, height, area);
-	write(1, map, area * 4);
+	gen.xbound.x = 1;
+	gen.xbound.y = width - 2;
+	gen.ybound.x = 1;
+	gen.ybound.y = height - 2;
+	gen.seed = seed;
+	gen.area = width * height;
+	init(&gen.map, width, height, gen.area + height);
+	gen.nrooms = NROOMS(gen.area);
+	gen.rooms = mgen_get_npoints(gen.nrooms, gen.xbound, gen.ybound, &gen.seed);
+	i = -1;
+	while (++i < gen.nrooms)
+		VALUE(gen.map, gen.rooms[i].x, gen.rooms[i].y, MAP_POINT);
+	write(1, gen.map, (gen.area + height) * 4);
 }
 
 int

@@ -57,6 +57,6 @@ fclean: clean
 	rm -rf $(NAME)
 
 ex: re
-	$(NAME) 20 20 1000
+	$(NAME) 15 15 1000
 
 re: fclean all
