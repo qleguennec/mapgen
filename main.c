@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 16:03:09 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/06 19:50:11 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/10 16:44:38 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #define PHI 1.618
 
 #define BOUND (i == 0 || j == 0 || i == width - 1 || j == height - 1)
-#define VALUE(m, i, j, x) (m)[i * (width + 1) + j] = x
+#define VALUE(m, i, j, x) (m)[j * width + i] = x
 #define NROOMS(a) (t_u32)(sqrt(a) * PHI)
 
 static void
@@ -35,9 +35,7 @@ static void
 		j = -1;
 		while (++j < width)
 			VALUE(*map, i, j, BOUND ? MAP_WALL : MAP_NONE);
-		VALUE(*map, i, j, MAP_NL);
 	}
-	VALUE(*map, i, j, MAP_NL);
 }
 
 static void
@@ -48,6 +46,8 @@ static void
 {
 	size_t	i;
 	t_gen	gen;
+	t_u32	nl;
+	t_u32_v2	v2;
 
 	gen.xbound.x = 1;
 	gen.xbound.y = width - 2;
@@ -59,9 +59,23 @@ static void
 	gen.nrooms = NROOMS(gen.area);
 	gen.rooms = mgen_get_npoints(gen.nrooms, gen.xbound, gen.ybound, &gen.seed);
 	i = -1;
+	t_u32_v4 tmp;
 	while (++i < gen.nrooms)
+	{
 		VALUE(gen.map, gen.rooms[i].x, gen.rooms[i].y, MAP_POINT);
-	write(1, gen.map, (gen.area + height) * 4);
+		tmp = mgen_get_area(gen.map, width, height, gen.rooms[i]);
+		v2 = gen.rooms[i];
+		ECHO2_U32(v2);
+		ECHO4_U32(tmp);
+	}
+	i = -1;
+	nl = MAP_NL;
+	while (++i < height)
+	{
+		PRINT("%c\t", i);
+		write(1, gen.map + i * height, width * 4);
+		write(1, &nl, 1);
+	}
 }
 
 int
@@ -85,11 +99,11 @@ int
 	STRTOB10(argv[2], height);
 	STRTOB10(argv[3], seed);
 	if (width < MINW || width > MAXW)
-		return (ERR("width must be in the range [%10, %10]", 1, MINW, MAXW));
+		return (ERR("width must be in the range [%a, %a]", 1, MINW, MAXW));
 	if (height < MINW || height > MAXW)
-		return (ERR("height must be in the range [%10, %10]", 1, MINH, MAXH));
+		return (ERR("height must be in the range [%a, %a]", 1, MINH, MAXH));
 	if (seed < MINSEED || seed > MAXSEED)
-		return (ERR("seed must be in the range [%10, %10]", 1, MINSEED, MAXSEED));
+		return (ERR("seed must be in the range [%a, %a]", 1, MINSEED, MAXSEED));
 	srand(seed);
 	gen((t_u32)width, (t_u32)height, (t_u32)seed);
 	return (0);
