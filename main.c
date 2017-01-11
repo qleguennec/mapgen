@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 16:03:09 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/11 00:56:28 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/11 01:15:24 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,15 @@ static void
 	gen.seed = seed;
 	gen.area = width * height;
 	init(&gen.map, width, height, gen.area + height);
+	gen.nrooms = 30;
 	//gen.nrooms = NROOMS(gen.area);
-	gen.nrooms = 1;
 	gen.rooms = mgen_get_npoints(gen.nrooms, gen.xbound, gen.ybound, &gen.seed);
 	i = -1;
 	while (++i < gen.nrooms)
 		VALUE(gen.map, gen.rooms[i].x, gen.rooms[i].y, MAP_SPAWN);
-	mgen_grow(&gen, gen.rooms[0], V4(t_u32, 1, 1, 1, 1), MAP_POINT);
+	i = -1;
+	while (++i < gen.nrooms)
+		mgen_grow(&gen, gen.rooms[i], V4(t_u32, 1, 1, 1, 1), MAP_POINT);
 	i = -1;
 	nl = MAP_NL;
 	while (++i < height)
