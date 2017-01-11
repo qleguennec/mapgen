@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/07 15:45:57 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/11 01:00:14 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/11 17:39:47 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,5 @@ t_u32
 
 	t = MULTIPLIER * (*seed % q) - r * (*seed / q);
 	*seed = t + ((t < 0) * MODULUS);
-	return (((float)*seed / MODULUS) * bound.y + bound.x);
+	return (((float)*seed / MODULUS) * (bound.y - 1) + bound.x);
 }

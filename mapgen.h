@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/30 18:54:23 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/11 01:03:03 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/11 18:09:37 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,21 @@
 # define MINSEED	1000
 # define MAXSEED	INT_MAX
 
-# define MAP_NONE	'x'
-# define MAP_WALL	'w'
-# define MAP_SPAWN	's'
-# define MAP_POINT	'o'
-# define MAP_NL		'\n'
+# define MAP_NONE	0
+# define MAP_WALL	1
+# define MAP_SPAWN	2
+# define MAP_POINT	3
+# define MAP_NL		4
 
-# define WIDTH(g)	(g->xbound.y + 2)
-# define HEIGHT(g)	(g->ybound.y + 2)
+# define MAP(a, b) (gen->map[b * gen->xbound.y + a])
+# define MAP2(a) (MAP((a).x, (a).y))
 
 # define RAND2(s, b1, b2) V2(t_u32, mgen_rand(s, b1), mgen_rand(s, b2))
 
 typedef struct		s_gen
 {
 	size_t			area;
-	t_u32			*map;
+	t_u8			*map;
 	t_u32			nrooms;
 	t_u32			seed;
 	t_u32_v2		xbound;
@@ -55,8 +55,9 @@ typedef struct		s_gen
 
 t_u32				mgen_rand(t_u32 *seed, t_u32_v2 bound);
 t_u32_v2			*mgen_get_npoints(t_u32 n, t_u32_v2 xbound, t_u32_v2 ybound, t_u32 *seed);
-t_u32_v4			mgen_get_area(t_u32 *map, t_u32 width, t_u32 height, t_u32_v2 v2);
-t_u32_v4			mgen_grow(t_gen *gen, t_u32_v2 v2, t_u32_v4 area, t_u8 fill);
-void				mgen_set_area(t_gen *gen, t_u32_v2 v2, t_u32_v4 area, t_u8 fill);
+t_u32_v4			mgen_get_area(t_gen *gen, t_u32_v2 v2, t_u8 c);
+t_u32_v4			mgen_grow(t_gen *gen, t_u32_v2 v2, t_u32_v4 area, const t_u8 *fill);
+void				mgen_set_area(t_gen *gen, t_u32_v2 v2, t_u32_v4 area, const t_u8 *fill);
+void				mgen_walls(t_gen *gen, t_u32_v2 v2, t_u32_v4 area, const t_u8 *fill);
 
 #endif
