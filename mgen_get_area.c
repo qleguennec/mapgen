@@ -6,17 +6,14 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/09 16:21:49 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/10 16:45:03 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/10 23:00:16 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mapgen.h"
 
-#define SET(x)		(x == MAP_POINT)
-#define LEFT(m)		(SET((m)[v2.y * width + (v2.x - 1)]))
-#define UP(m)		(SET((m)[(v2.y - 1) * width + v2.x]))
-#define RIGHT(m)	(SET((m)[v2.y * width + (v2.x + 1)]))
-#define DOWN(m)		(SET((m)[(v2.y + 1) * width + v2.x]))
+#define BOUND(x, y) (x > 0 && y > 0 && x < width - 1 && y < height - 1)
+#define SET(x, y)(BOUND(x, y) && map[y * width + x] == MAP_POINT)
 
 t_u32_v4
 	mgen_get_area
@@ -31,13 +28,13 @@ t_u32_v4
 	a.b = 0;
 	a.c = 0;
 	a.d = 0;
-	while (v2.x - V4L(a) && LEFT(map))
+	while (SET((v2.x - (V4L(a) + 1)), v2.y))
 		V4L(a)++;
-	while (v2.y - V4U(a) && UP(map))
-		V4U(a)++;
-	while (v2.x + V4R(a) < width && RIGHT(map))
+	while (SET((v2.x + V4R(a) + 1), v2.y))
 		V4R(a)++;
-	while (v2.y + V4D(a) < height && DOWN(map))
+	while (SET(v2.x, (v2.y - (V4U(a) + 1))))
+		V4U(a)++;
+	while (SET(v2.x, (v2.y + V4D(a) + 1)))
 		V4D(a)++;
 	return (a);
 }

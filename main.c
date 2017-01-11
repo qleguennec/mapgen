@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 16:03:09 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/10 16:44:38 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/11 00:56:28 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static void
 	size_t	i;
 	t_gen	gen;
 	t_u32	nl;
-	t_u32_v2	v2;
 
 	gen.xbound.x = 1;
 	gen.xbound.y = width - 2;
@@ -56,18 +55,13 @@ static void
 	gen.seed = seed;
 	gen.area = width * height;
 	init(&gen.map, width, height, gen.area + height);
-	gen.nrooms = NROOMS(gen.area);
+	//gen.nrooms = NROOMS(gen.area);
+	gen.nrooms = 1;
 	gen.rooms = mgen_get_npoints(gen.nrooms, gen.xbound, gen.ybound, &gen.seed);
 	i = -1;
-	t_u32_v4 tmp;
 	while (++i < gen.nrooms)
-	{
-		VALUE(gen.map, gen.rooms[i].x, gen.rooms[i].y, MAP_POINT);
-		tmp = mgen_get_area(gen.map, width, height, gen.rooms[i]);
-		v2 = gen.rooms[i];
-		ECHO2_U32(v2);
-		ECHO4_U32(tmp);
-	}
+		VALUE(gen.map, gen.rooms[i].x, gen.rooms[i].y, MAP_SPAWN);
+	mgen_grow(&gen, gen.rooms[0], V4(t_u32, 1, 1, 1, 1), MAP_POINT);
 	i = -1;
 	nl = MAP_NL;
 	while (++i < height)

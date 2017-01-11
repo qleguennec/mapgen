@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 19:07:19 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/06 19:17:35 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/11 01:02:03 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ t_u32_v2
 	i = 0;
 	MALLOC_N(points, n);
 	while (i < n)
-		points[i++] = mgen_rand_point(xbound, ybound, seed);
+		points[i++] = RAND2(seed, xbound, ybound);
 	return (points);
 }

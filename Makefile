@@ -28,6 +28,7 @@ LIBLINK		=	 -lfmt -lvect -lft
 LIBDIRS		:=	$(patsubst -l%, lib%, $(LIBLINK))
 LIBS		:=	$(addsuffix .a, $(LIBDIRS))
 LDFLAGS		:=	$(addprefix -L, $(LIBDIRS))
+LIBLINK		+=	-lm
 #FRAMEWORKS	=	-framework OpenCL -framework OpenGL -framework AppKit
 
 all: $(NAME)
