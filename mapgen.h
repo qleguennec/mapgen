@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/30 18:54:23 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/11 18:09:37 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/12 17:10:37 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@
 
 # include "libfmt/libfmt.h"
 # include "libft/libft.h"
+# include "libvll/libvll.h"
 # include <limits.h>
+# include <math.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <math.h>
 
 # define MINW		5
 # define MAXW		2000
@@ -37,27 +38,27 @@
 # define MAP_POINT	3
 # define MAP_NL		4
 
-# define MAP(a, b) (gen->map[b * gen->xbound.y + a])
-# define MAP2(a) (MAP((a).x, (a).y))
+# define XRANGE (bounds[0])
+# define YRANGE (bounds[1])
+# define WRANGE (bounds[2])
+# define HRANGE (bounds[3])
 
-# define RAND2(s, b1, b2) V2(t_u32, mgen_rand(s, b1), mgen_rand(s, b2))
+# define MAP(a, b) (gen->map[b * XRANGE.y + a])
+# define MAP2(a) (MAP((a).x, (a).y))
+# define RAND2(min, max) mgen_rand(&gen->seed, min, max - 1)
+# define BRAND2(b) mgen_rand(&gen->seed, (b).x, ((b).y - 1))
 
 typedef struct		s_gen
 {
-	size_t			area;
-	t_u8			*map;
 	t_u32			nrooms;
 	t_u32			seed;
-	t_u32_v2		xbound;
-	t_u32_v2		ybound;
-	t_u32_v2		*rooms;
+	t_u8			*map;
+	t_vll			rooms;
 }					t_gen;
 
-t_u32				mgen_rand(t_u32 *seed, t_u32_v2 bound);
-t_u32_v2			*mgen_get_npoints(t_u32 n, t_u32_v2 xbound, t_u32_v2 ybound, t_u32 *seed);
-t_u32_v4			mgen_get_area(t_gen *gen, t_u32_v2 v2, t_u8 c);
-t_u32_v4			mgen_grow(t_gen *gen, t_u32_v2 v2, t_u32_v4 area, const t_u8 *fill);
-void				mgen_set_area(t_gen *gen, t_u32_v2 v2, t_u32_v4 area, const t_u8 *fill);
-void				mgen_walls(t_gen *gen, t_u32_v2 v2, t_u32_v4 area, const t_u8 *fill);
+t_u32				mgen_rand(t_u32 *seed, t_u32 min, t_u32 max);
+void				mgen_gen(t_gen *gen, t_u32_v2 *b, t_u8 *fill);
+void				mgen_room_push(t_gen *gen, t_u32_v4 room, t_u32_v2 *bounds, t_u8 *fill);
+void				mgen_room_rand(t_gen *gen, t_u32_v2 *b, t_u8 *fill);
 
 #endif

@@ -1,36 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mgen_get_area.c                                    :+:      :+:    :+:   */
+/*   mgen_room_push.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/09 16:21:49 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/11 17:55:53 by qle-guen         ###   ########.fr       */
+/*   Created: 2017/01/12 11:19:49 by qle-guen          #+#    #+#             */
+/*   Updated: 2017/01/12 17:04:52 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mapgen.h"
 
-#define BOUND(a, b) (a < gen->xbound.y && b < gen->ybound.y)
-#define SET(a, b) (BOUND(a, b) && MAP(a, b) == c)
-
-t_u32_v4
-	mgen_get_area
+void
+	mgen_room_push
 	(t_gen *gen
-	 , t_u32_v2 v2
-	 , t_u8 c)
+	, t_u32_v4 room
+	, t_u32_v2 *bounds
+	, t_u8 *fill)
 {
-	t_u32_v4	a;
+	t_u32_v2	rb;
+	t_u32_v2	lu;
 
-	a = V4(t_u32, 0, 0, 0, 0);
-	while (SET(v2.x - V4L(a) + 1, v2.y))
-		V4L(a)++;
-	while (SET(v2.x + V4R(a) + 1, v2.y))
-		V4R(a)++;
-	while (SET(v2.x, v2.y - V4U(a) + 1))
-		V4U(a)++;
-	while (SET(v2.x, v2.y + V4D(a) + 1))
-		V4D(a)++;
-	return (a);
+	rb = V4_V2(t_u32, room, SUM2);
+	lu = V2(t_u32, room.a, room.b);
+	while (NEQ2(lu, rb))
+	{
+		MAP2(lu) = fill[lu.x == V4X(room)
+			|| lu.y == V4Y(room)
+			|| lu.x == rb.x
+			|| lu.y == rb.y
+			? MAP_WALL : MAP_POINT];
+		lu = SUM2(t_u32
+			, lu
+			, (lu.x == rb.x ? V2(t_i32, (- V4W(room)), 1) : V2(t_i32, 1, 0)));
+	}
+	MAP2(rb) = fill[MAP_WALL];
 }

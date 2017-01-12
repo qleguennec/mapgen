@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 16:03:09 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/11 18:12:06 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/12 17:04:34 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,11 @@
 #define PHI 1.618
 
 #define BOUND (i == 0 || j == 0 || i == width - 1 || j == height - 1)
-#define VALUE(m, i, j, x) (m)[j * width + i] = x
 #define NROOMS(a) (t_u32)(sqrt(a) / PHI)
+#define ROOM_GROW_FACTOR 2
+#define VALUE(m, i, j, x) (m)[j * width + i] = x
+#define XGROW(w) (w / ROOM_GROW_FACTOR)
+#define YGROW(h) (h / ROOM_GROW_FACTOR)
 
 static void
 	print
@@ -30,7 +33,7 @@ static void
 	i = 0;
 	while (i < height)
 	{
-		write(1, map + i * height, width);
+		write(1, map + i * width, width);
 		write(1, &nl, 1);
 		i++;
 	}
@@ -42,25 +45,23 @@ static void
 	 , t_u32 height
 	 , t_u32 seed)
 {
-	const static t_u8		fill[MAP_NL + 1] = "ows \n";
-	size_t					i;
-	t_gen					gen;
+	static t_u8		fill[MAP_NL + 1] = "ows \n";
+	t_gen			gen;
+	t_u32_v2		bounds[4];
+	t_u64			area;
 
-	gen.xbound.x = 0;
-	gen.xbound.y = width;
-	gen.ybound.x = 0;
-	gen.ybound.y = height;
+	bounds[0] = V2(t_u32, 0, width);
+	bounds[1] = V2(t_u32, 0, height);
+	bounds[2] = V2(t_u32, 5, XGROW(width));
+	bounds[3] = V2(t_u32, 5, YGROW(height));
 	gen.seed = seed;
-	gen.area = width * height;
-	MALLOC_N(gen.map, gen.area);
-	ft_memset(gen.map, fill[MAP_NONE], gen.area);
-	//gen.nrooms = NROOMS(gen.area);
+	area = width * height;
+	MALLOC_N(gen.map, area);
+	ft_memset(gen.map, fill[MAP_NONE], area);
+	vll_init(&gen.rooms);
 	gen.nrooms = 1;
-	gen.rooms = mgen_get_npoints(gen.nrooms, gen.xbound, gen.ybound, &gen.seed);
-	i = -1;
-	while (++i < gen.nrooms)
-		mgen_grow(&gen, gen.rooms[i], V4(t_u32, 4, 4, 4, 4), fill);
-	print((void *)gen.map, width, height, fill[MAP_NL]);
+	mgen_gen(&gen, bounds, fill);
+	print(gen.map, width, height, fill[MAP_NL]);
 }
 
 int
