@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/12 15:47:33 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/14 18:58:45 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/14 20:57:40 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ void
 	attempts = 0;
 	while (attempts < MAX_ATTEMPTS)
 	{
-		if (X + W >= WIDTH.y && Y + H >= HEIGHT.y)
+		if (X + W >= WIDTH.y || Y + H >= HEIGHT.y)
 		{
 			attempts++;
-			MEMCPY(room, VLL_DATA(gen->rooms->head));
+			MEMCPY(room, VLL_DATA(gen->rooms->tail));
 		}
 		else
 			mgen_room_push(gen, room, bounds, fill);

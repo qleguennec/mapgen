@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 16:03:09 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/14 18:42:15 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/14 20:43:34 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 #define DEBUG 1
 #define ROOM_GROW_FACTOR 3
 #define VALUE(m, i, j, x) (m)[j * width + i] = x
-#define XMAX (width / 3)
-#define YMAX (height / 3)
+#define XMAX (width / 6)
+#define YMAX (height / 6)
 #define XMIN (width / 10)
 #define YMIN (height / 10)
 
