@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/30 18:54:23 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/12 17:10:37 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/14 18:43:40 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# define MINW		5
+# define MINW		40
 # define MAXW		2000
-# define MINH		5
+# define MINH		40
 # define MAXH		2000
 # define MINSEED	1000
 # define MAXSEED	INT_MAX
@@ -36,24 +36,26 @@
 # define MAP_WALL	1
 # define MAP_SPAWN	2
 # define MAP_POINT	3
-# define MAP_NL		4
+# define MAP_EXIT	4
+# define MAP_NL		5
 
-# define XRANGE (bounds[0])
-# define YRANGE (bounds[1])
-# define WRANGE (bounds[2])
-# define HRANGE (bounds[3])
+# define WIDTH	(bounds[0])
+# define HEIGHT	(bounds[1])
+# define XRAND	(bounds[2])
+# define YRAND	(bounds[3])
+# define WRAND	(bounds[4])
+# define HRAND	(bounds[5])
 
-# define MAP(a, b) (gen->map[b * XRANGE.y + a])
+# define MAP(a, b) (gen->map[b * WIDTH.y + a])
 # define MAP2(a) (MAP((a).x, (a).y))
-# define RAND2(min, max) mgen_rand(&gen->seed, min, max - 1)
-# define BRAND2(b) mgen_rand(&gen->seed, (b).x, ((b).y - 1))
+# define RAND(min, max) mgen_rand(&gen->seed, (min), (max) - 1)
+# define BRAND(b) mgen_rand(&gen->seed, (b).x, ((b).y - 1))
 
 typedef struct		s_gen
 {
-	t_u32			nrooms;
 	t_u32			seed;
 	t_u8			*map;
-	t_vll			rooms;
+	t_vll			*rooms;
 }					t_gen;
 
 t_u32				mgen_rand(t_u32 *seed, t_u32 min, t_u32 max);

@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/12 15:47:33 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/12 18:03:42 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/14 18:58:45 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,20 @@
 #define W V4W(room)
 #define H V4H(room)
 
-static t_u32_v2
+#define MAX_ATTEMPTS 10
+
+static t_u32_v4
 	get_exit
 	(t_gen *gen
-	, t_u32_v4 room)
+	, t_u32_v2 *bounds
+	, t_u32_v4 room
+	, t_u32 direction)
 {
-	t_u32	e;
-
-	e = RAND2(0, 2 * (W + H));
-	PUT("e\t");
-	ECHO_U32(e);
-	if (e >= X && e < X + W)
-		return (V2(t_u32, e + X, Y));
-	e -= W;
-	if (e >= Y && e < Y + H)
-		return (V2(t_u32, X, e + Y));
-	e -= H;
-	if (e >= X && e < X + W)
-		return (V2(t_u32, e + X, Y));
-	e -= W;
-	return (V2(t_u32, X, e + Y));
+	if (direction == 0)
+		return (V4(t_u32, X + W, RAND(Y, Y + H - 2), BRAND(WRAND), BRAND(HRAND)));
+	if (direction == 1)
+		return (V4(t_u32, RAND(X, X + W - 2), Y + H, BRAND(WRAND), BRAND(HRAND)));
+	return (V4(t_u32, -1, -1, -1, -1));
 }
 
 void
@@ -45,12 +39,21 @@ void
 	, t_u32_v2 *bounds
 	, t_u8 *fill)
 {
+	t_u32		attempts;
 	t_u32_v4	room;
 
-	X = 0;
-	Y = 0;
-	W = BRAND2(WRANGE);
-	H = BRAND2(HRANGE);
+	room = V4(t_u32, 0, 0, BRAND(WRAND), BRAND(HRAND));
 	mgen_room_push(gen, room, bounds, fill);
-	ECHO2_U32(get_exit(gen, room));
+	attempts = 0;
+	while (attempts < MAX_ATTEMPTS)
+	{
+		if (X + W >= WIDTH.y && Y + H >= HEIGHT.y)
+		{
+			attempts++;
+			MEMCPY(room, VLL_DATA(gen->rooms->head));
+		}
+		else
+			mgen_room_push(gen, room, bounds, fill);
+		room = get_exit(gen, bounds, room, RAND(0, 2));
+	}
 }
