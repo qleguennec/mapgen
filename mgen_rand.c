@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/07 15:45:57 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/12 15:34:41 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/15 13:24:33 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 t_u32
 	mgen_rand
 	(t_u32 *seed
-	 , t_u32 min
-	 , t_u32 max)
+	, t_u32 min
+	, t_u32 max)
 {
 	const static t_u32		q = MODULUS / MULTIPLIER;
 	const static t_u32		r = MODULUS % MULTIPLIER;

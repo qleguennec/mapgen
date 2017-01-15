@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 16:03:09 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/15 01:22:09 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/15 15:55:53 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,25 @@
 #define PHI 1.618
 
 #define BOUND (i == 0 || j == 0 || i == width - 1 || j == height - 1)
-#define DEBUG 1
+#define DEBUG 0
 #define ROOM_GROW_FACTOR 3
 #define VALUE(m, i, j, x) (m)[j * width + i] = x
-#define XMAX (width / 2)
-#define YMAX (height / 2)
-#define XMIN (width / 10)
-#define YMIN (height / 10)
+#define XMAX (width / 6)
+#define YMAX (height / 6)
+#define XMIN (width / 7)
+#define YMIN (height / 7)
 
-static void
+// TODO static
+void
 	print
 	(t_u8 *map
 	, t_u32 width
-	, t_u32 height
-	, t_u8 nl)
+	, t_u32 height)
 {
 	size_t		i;
+	char		nl;
 
+	nl = MAP_NL;
 	i = 0;
 	while (i < height)
 	{
@@ -57,7 +59,6 @@ static void
 	, t_u32 height
 	, t_u32 seed)
 {
-	static t_u8		fill[MAP_NL + 1] = "ows -\n";
 	t_gen			gen;
 	t_u32_v2		bounds[6];
 	t_u64			area;
@@ -71,10 +72,10 @@ static void
 	gen.seed = seed;
 	area = width * height;
 	MALLOC_N(gen.map, area);
-	ft_memset(gen.map, fill[MAP_NONE], area);
+	ft_memset(gen.map, MAP_NONE, area);
 	gen.rooms = vll_new();
-	mgen_gen(&gen, bounds, fill);
-	print(gen.map, width, height, fill[MAP_NL]);
+	mgen_gen(&gen, bounds);
+	print(gen.map, width, height);
 	deinit(&gen);
 }
 
