@@ -6,13 +6,13 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/12 15:47:33 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/15 17:22:38 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/15 20:00:13 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mapgen.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 #define X V4X(*room)
 #define Y V4Y(*room)
@@ -21,7 +21,7 @@
 
 #define ARBRAND RAND(2, 256)
 
-#define MAX_ATTEMPTS	20
+#define MAX_ATTEMPTS	100
 #define MIN_ROOMS		(WIDTH.y / 40)
 
 static void
@@ -90,13 +90,13 @@ static void
 	, t_u32_v2 *bounds)
 {
 	if (Y == V4Y(*prev) && X < V4X(*prev))
-		MAP(V4X(*prev), RAND(Y + 1, Y + H - 1)) = MAP_DOOR;
-	else if (X == V4X(*prev) && Y < V4Y(*prev))
-		MAP(RAND(X + 1, X + W - 1), V4Y(*prev)) = MAP_DOOR;
+		MAP(V4X(*prev), RAND(Y + 1, MIN(Y + H, V4Y2(*prev)) - 1)) = MAP_DOOR;
+	else if (X == V4X(*prev) && Y < V4Y2(*prev))
+		MAP(RAND(X + 1, MIN(X + W, V4X2(*prev)) - 1), V4Y(*prev)) = MAP_DOOR;
 	else if (Y == V4Y(*prev) && X > V4X(*prev))
-		MAP(X, RAND(Y + 1, Y + H - 1)) = MAP_DOOR;
-	else if (X + V4X(*prev) && Y > V4Y(*prev))
-		MAP(RAND(X + 1, X + W - 1), Y) = MAP_DOOR;
+		MAP(X, RAND(Y + 1, MIN(Y + H, V4Y2(*prev)) - 1)) = MAP_DOOR;
+	else if (X == V4X(*prev) && Y > V4Y(*prev))
+		MAP(RAND(X + 1, MIN(X + W, V4X2(*prev)) - 1), Y) = MAP_DOOR;
 }
 
 void
@@ -109,7 +109,7 @@ void
 	t_vll_node	*n;
 	char		d;
 
-	room = V4(t_u32, 0, 0, BRAND(WRAND), BRAND(HRAND));
+	room = V4(t_u32, BRAND(XRAND), BRAND(YRAND), BRAND(WRAND), BRAND(HRAND));
 	n = VLL_ADD(gen->rooms, room);
 	attempts = 0;
 	while (attempts < MAX_ATTEMPTS || gen->rooms->size < MIN_ROOMS)
@@ -119,12 +119,13 @@ void
 		else
 			n = VLL_ADD_BACK(gen->rooms, n, room);
 	}
-	MAP(V4X(room) + 1, V4Y(room) + 1) = MAP_SPAWN;
+	MAP((V4X(room) + 1), (V4Y(room) + 1)) = MAP_SPAWN;
 	while (n)
 	{
 		gen_room_push(gen, VLL_DATA(n), bounds);
 		if (n->next)
 			gen_exit(gen, VLL_DATA(n->next), VLL_DATA(n), bounds);
+		// TODO remove
 		if (DEBUG)
 		{
 			print(gen->map, WIDTH.y, HEIGHT.y);

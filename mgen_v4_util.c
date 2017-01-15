@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/14 23:05:51 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/15 15:41:08 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/15 19:19:59 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,19 @@
 bool
 	mgen_v4_is_free
 	(t_vll *l
-	, t_u32_v4 v4)
+	, t_u32_v4 a)
 {
-	t_u32_v4	w;
+	t_u32_v4	b;
 	t_vll_node	*n;
 
 	n = l->head;
 	while (n)
 	{
-		MEMCPY(w, VLL_DATA(n));
-		if (V4X(w) >= V4X(v4)
-			&& V4X(w) < V4X(v4) + V4W(v4)
-			&& V4Y(w) >= V4X(v4)
-			&& V4Y(w) < V4Y(v4) + V4H(v4))
-			return (false);
-		if (V4X(v4) >= V4X(w)
-			&& V4X(v4) < V4X(w) + V4W(w)
-			&& V4Y(v4) >= V4X(w)
-			&& V4Y(v4) < V4Y(w) + V4H(w))
+		MEMCPY(b, VLL_DATA(n));
+		if (V4X1(a) < V4X2(b)
+			&& V4X2(a) > V4X1(b)
+			&& V4Y1(a) < V4Y2(b)
+			&& V4Y2(a) > V4Y1(b))
 			return (false);
 		n = n->next;
 	}
