@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/12 15:47:33 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/15 20:00:13 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/15 20:06:56 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 #define ARBRAND RAND(2, 256)
 
-#define MAX_ATTEMPTS	100
+#define MAX_ATTEMPTS	1000
 #define MIN_ROOMS		(WIDTH.y / 40)
 
 static void

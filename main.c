@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 16:03:09 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/15 15:55:53 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/15 20:06:01 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 #define DEBUG 0
 #define ROOM_GROW_FACTOR 3
 #define VALUE(m, i, j, x) (m)[j * width + i] = x
-#define XMAX (width / 6)
-#define YMAX (height / 6)
-#define XMIN (width / 7)
-#define YMIN (height / 7)
+#define XMAX (width / 2)
+#define YMAX (height / 2)
+#define XMIN (width / 10)
+#define YMIN (height / 10)
 
 // TODO static
 void
@@ -67,7 +67,7 @@ static void
 	bounds[1] = V2(t_u32, 0, height);
 	bounds[2] = V2(t_u32, 0, width - XMAX);
 	bounds[3] = V2(t_u32, 0, height - YMAX);
-	bounds[4] = V2(t_u32, YMIN, XMAX);
+	bounds[4] = V2(t_u32, XMIN, XMAX);
 	bounds[5] = V2(t_u32, YMIN, YMAX);
 	gen.seed = seed;
 	area = width * height;
