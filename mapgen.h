@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/30 18:54:23 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/15 23:31:08 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/15 23:49:30 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define MAP_MAXH INT_MAX
 # define MAP_MINH (ROOM_MINH * ROOM_MAXH)
 
-# define MAP_AVG_DENSITY 1000
+# define MAP_AVG_DENSITY 10000
 
 # define MAP_DOOR	' '
 # define MAP_NL		'\n'
