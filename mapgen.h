@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/30 18:54:23 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/16 11:10:12 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/16 16:45:38 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "libfmt/libfmt.h"
 # include "libft/libft.h"
 # include "libvll/libvll.h"
+# include "mgen_map_conf.h"
 # include <limits.h>
 # include <math.h>
 # include <stdlib.h>
@@ -40,14 +41,6 @@
 # define MAP_MINH (ROOM_MINH * ROOM_MAXH)
 
 # define MAP_AVG_DENSITY 10000
-
-# define MAP_DOOR	' '
-# define MAP_NL		'\n'
-# define MAP_NONE	'.'
-# define MAP_POINT	' '
-# define MAP_SPAWN	'o'
-# define MAP_WALL	'x'
-# define COMMENT	"#"
 
 # define BRAND(b) mgen_rand(&gen->seed, (b).x, ((b).y - 1))
 # define MAP(a, b) (map[b * gen->width + a])
