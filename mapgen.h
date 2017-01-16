@@ -6,7 +6,7 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/30 18:54:23 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/15 23:49:30 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/16 11:10:12 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@
 # define MAP_POINT	' '
 # define MAP_SPAWN	'o'
 # define MAP_WALL	'x'
+# define COMMENT	"#"
 
 # define BRAND(b) mgen_rand(&gen->seed, (b).x, ((b).y - 1))
 # define MAP(a, b) (map[b * gen->width + a])

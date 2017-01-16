@@ -6,13 +6,14 @@
 /*   By: qle-guen <qle-guen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 16:03:09 by qle-guen          #+#    #+#             */
-/*   Updated: 2017/01/15 23:31:35 by qle-guen         ###   ########.fr       */
+/*   Updated: 2017/01/16 11:11:56 by qle-guen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mapgen.h"
 
 #define BOUND (i == 0 || j == 0 || i == width - 1 || j == height - 1)
+#define PRINTSEED 1
 #define DEBUG 0
 #define VALUE(m, i, j, x) (m)[j * width + i] = x
 
@@ -95,7 +96,8 @@ int
 		return (ERR("height must be in the range [%a, %a]", 1, MAP_MINH, MAP_MAXH));
 	if (seed < MINSEED || seed > MAXSEED)
 		return (ERR("seed must be in the range [%a, %a]", 1, MINSEED, MAXSEED));
-	srand(seed);
+	if (PRINTSEED && PUT(COMMENT))
+		ECHO_U32(seed);
 	gen((t_u32)width, (t_u32)height, (t_u32)seed);
 	return (0);
 }
